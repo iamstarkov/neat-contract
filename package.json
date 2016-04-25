@@ -1,6 +1,6 @@
 {
   "name": "neat-contract",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "yet another one contract library, data flow focused",
   "main": "index.es5.js",
   "jsnext:main": "index.js",
