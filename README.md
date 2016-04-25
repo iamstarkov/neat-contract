@@ -8,6 +8,9 @@
 
 > yet another one contract library, data flow focused
 
+If contract is satisfied, returns value, otherwise, throwing `TypeError` exception.
+Well suited for promises as well.
+
 ## Install
 
     npm install --save neat-contract
@@ -15,36 +18,75 @@
 ## Usage
 
 ```js
-import { neatContract, neatContractAsync } from 'neat-contract';
+import contract from 'neat-contract';
 
-neatContract('unicorns'); // unicorns
-neatContractAsync('unicorns')
-  .then(result => console.log(result)); // unicorns
+contract('input', String, 'unicorns'); // 'unicorns'
+contract('input', String, 2); // new TypeError('`input` should be an `String`, but got `Number`: 2')
+
+// curried
+contract('input', String)('unicorns'); // 'unicorns'
+contract('input', String)(2); // new TypeError('`input` should be an `String`, but got `Number`: 2')
+```
+
+Useful in unary data-flow functions:
+
+```js
+import R from 'ramda';
+import contract from 'neat-contract';
+
+
+// sync data flow
+const prefixEslintPlugin = R.pipe(
+  contract('pluginName', String),
+  R.concat('eslint-plugin-')
+);
+
+prefixEslintPlugin('import'); // 'eslint-plugin-import'
+prefixEslintPlugin(true);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
+prefixEslintPlugin(/reg/); // new TypeError('`pluginName` should be an `String`, but got `Number`: /reg/')
+
+
+// async data flow
+const resolve = Promise.resolve.bind(Promise);
+const prefixEslintPluginAsync = R.pipeP(resolve,
+  contract('pluginName', String),
+  R.concat('eslint-plugin-')
+);
+
+const log = result => console.log(result);
+const err = result => console.error(result);
+prefixEslintPluginAsync('import').then(log); // 'eslint-plugin-import'
+prefixEslintPluginAsync(true).catch(err);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
+prefixEslintPluginAsync(/reg/).catch(err); // new TypeError('`pluginName` should be an `String`, but got `Number`: /reg/')
 ```
 
 ## API
 
-### neatContract(input, [options])
+### contract(name, ctor, param)
 
-### neatContractAsync(input, [options])
+    // contract :: String -> Constructor -> a -> a|throw new TypeError
 
-Return a promise that resolves to `result`.
-
-#### input
+#### name
 
 *Required*  
 Type: `String`
 
-Lorem ipsum.
+Parameter name.
 
-#### options
+#### ctor
 
-##### foo
+*Required*  
+Type: `Constructor`  
+Example: `String`, `Number` or `Function`
 
-Type: `Boolean`  
-Default: `false`
+Parameter Constructor for type check
 
-Lorem ipsum.
+#### param
+
+*Required*  
+Type: any  
+
+Actual parameter itself to type check with `Constructor`.
 
 ## License
 
