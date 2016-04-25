@@ -4,7 +4,7 @@ import R from 'ramda';
 const errorText = (name, ctor, param) => {
   const expected = R.type(ctor());
   const got = R.type(param);
-  return `\`${name}\` should be an \`${expected}\`, but got \`${got}\``;
+  return `\`${name}\` should be an \`${expected}\`, but got \`${got}\`: ${param}`;
 };
 
 // contract :: String -> Constructor -> a
