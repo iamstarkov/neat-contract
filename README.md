@@ -43,7 +43,7 @@ const prefixEslintPlugin = R.pipe(
 
 prefixEslintPlugin('import'); // 'eslint-plugin-import'
 prefixEslintPlugin(true);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
-prefixEslintPlugin(/reg/); // new TypeError('`pluginName` should be an `String`, but got `Number`: /reg/')
+prefixEslintPlugin(/reg/); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
 
 
 // async data flow
@@ -57,7 +57,7 @@ const log = result => console.log(result);
 const err = result => console.error(result);
 prefixEslintPluginAsync('import').then(log); // 'eslint-plugin-import'
 prefixEslintPluginAsync(true).catch(err);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
-prefixEslintPluginAsync(/reg/).catch(err); // new TypeError('`pluginName` should be an `String`, but got `Number`: /reg/')
+prefixEslintPluginAsync(/reg/).catch(err); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
 ```
 
 ## API
