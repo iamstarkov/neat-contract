@@ -1,15 +1,17 @@
-function neatContractAsync(input) {
-  if (typeof input !== 'string') {
-    return Promise.reject(new TypeError(`\input\` should be \`String\`, got \`${typeof input}\``));
-  }
-  return Promise.resolve(input);
-}
+import R from 'ramda';
 
-function neatContract(input) {
-  if (typeof input !== 'string') {
-    throw new TypeError(`\input\` should be \`String\`, got \`${typeof input}\``);
-  }
-  return input;
-}
+// String -> Constructor -> a -> String
+const errorText = (name, ctor, param) => {
+  const expected = R.type(ctor());
+  const got = R.type(param);
+  return `\`${name}\` should be an \`${expected}\`, but got \`${got}\``;
+};
 
-export { neatContract, neatContractAsync };
+// contract :: String -> Constructor -> a
+const contract = R.curry((name, ctor, param) => R.unless(
+  R.is(ctor),
+  () => { throw new TypeError(errorText(name, ctor, param)); }
+)(param));
+
+
+export default contract;

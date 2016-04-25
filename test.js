@@ -1,15 +1,14 @@
 import test from 'ava';
-import { neatContract, neatContractAsync } from './index';
+import contract from './index';
 
-test('basic', t =>
-  t.is(neatContract('unicorns'), 'unicorns'));
+test('basic', t => t.is(
+  contract('input', String, 'unicorns'),
+  'unicorns'
+));
 
-test('empty input', t => t.throws(() => { neatContract(); }, TypeError));
-test('invalid input', t => t.throws(() => { neatContract(2); }, TypeError));
+test('curried', t => t.is(
+  contract('input', String)('unicorns'),
+  'unicorns'
+));
 
-test('async :: basic', async t => t.is(
-  await neatContractAsync('unicorns'),
-  'unicorns'));
-
-test('async :: empty input', t => t.throws(neatContractAsync(), TypeError));
-test('async :: invalid input', t => t.throws(neatContractAsync(2), TypeError));
+test('throws', t => t.throws(() => { contract('input', String, 2); }, TypeError));
