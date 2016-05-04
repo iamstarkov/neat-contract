@@ -39,3 +39,25 @@ test('pipe async', async t => t.is(
 ));
 
 test('pipe async rejects', t => t.throws(prefixEslintPluginAsync(2), TypeError));
+
+// contracting array
+const prefixArrayOfEslintPlugins = R.pipe(
+  R.pipe( // contracting
+    contract('plugins', Array),
+    R.map(contract('plugins[item]', String))
+  ),
+  R.map(R.concat('eslint-plugin-'))
+);
+
+test('contracting ', t => t.deepEqual(
+  prefixArrayOfEslintPlugins(['import', 'export']),
+  ['eslint-plugin-import', 'eslint-plugin-export']
+));
+
+test('contracting array itself', t => t.throws(() => {
+  prefixArrayOfEslintPlugins(2);
+}, TypeError));
+
+test('contracting array items', t => t.throws(() => {
+  prefixArrayOfEslintPlugins(['unicorns', 2]);
+}, TypeError));
