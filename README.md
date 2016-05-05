@@ -18,10 +18,10 @@ Well suited for promises as well.
 ## Usage
 
 * [Basic](#basic)
-* Data-flow
-  * Sync data-flow
-  * Async data-flow
-  * Arrays in data-flow
+* [Data-flow](#data-flow)
+  * [Sync data-flow](#sync-data-flow)
+  * [Async data-flow](#async-data-flow)
+  * [Arrays in data-flow](#arrays-in-data-flow)
 
 ### Basic
 
