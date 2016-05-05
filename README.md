@@ -40,7 +40,6 @@ contract(input, Array, ['unicorns', 'cats']); // ['unicorns', 'cats']
 contract(input, Array, 2); // new TypeError('`input` should be an `Array`, but got `Number`: 2')
 ['unicorns', 'cats'].forEach(contract('input[item]', String)); // ['unicorns', 'cats']
 ['unicorns', 2].forEach(contract('input[item]', String)); // new TypeError('`input[item]` should be an `String`, but got `Number`: 2')
-
 ```
 
 ### Data-flow
@@ -84,7 +83,7 @@ prefixEslintPluginAsync(true).catch(_throw);  // new TypeError('`pluginName` sho
 prefixEslintPluginAsync(/reg/).catch(_throw); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
 ```
 
-##### Arrays in data-flow
+#### Arrays in data-flow
 
 ```js
 import R from 'ramda';
@@ -104,7 +103,7 @@ prefixArrayOfEslintPlugins(2); // throw new TypeError('`plugins` should be an `A
 prefixArrayOfEslintPlugins(['unicorns', 2]); // throw new TypeError('`plugins[item]` should be an `String`, but got `Number`: 2')
 ```
 
-Contracting arrays in asynchronous functions goes, the same way as before with `R.pipeP` as in `prefixEslintPluginAsync` async example from above.
+Contracting arrays in asynchronous functions goes, the same way as in [async example from above](#async-data-flow).
 
 ## API
 
