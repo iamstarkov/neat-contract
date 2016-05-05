@@ -17,6 +17,14 @@ Well suited for promises as well.
 
 ## Usage
 
+* Basic
+* Data-flow
+  * Sync data-flow
+  * Async data-flow
+  * Arrays in data-flow
+
+### Basic
+
 ```js
 import contract from 'neat-contract';
 
@@ -35,12 +43,13 @@ contract(input, Array, 2); // new TypeError('`input` should be an `Array`, but g
 
 ```
 
-Useful in data-flow functions:
+### Data-flow
+
+#### Sync data-flow
 
 ```js
 import R from 'ramda';
 import contract from 'neat-contract';
-
 
 // sync data flow
 const prefixEslintPlugin = R.pipe(
@@ -51,7 +60,13 @@ const prefixEslintPlugin = R.pipe(
 prefixEslintPlugin('import'); // 'eslint-plugin-import'
 prefixEslintPlugin(true);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
 prefixEslintPlugin(/reg/); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
+```
 
+#### Async data-flow
+
+```js
+import R from 'ramda';
+import contract from 'neat-contract';
 
 // async data flow
 const toPromise = Promise.resolve.bind(Promise);
@@ -65,13 +80,19 @@ const err = result => console.error(result);
 prefixEslintPluginAsync('import').then(log); // 'eslint-plugin-import'
 prefixEslintPluginAsync(true).catch(err);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
 prefixEslintPluginAsync(/reg/).catch(err); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
+```
 
+##### Arrays in data-flow
+
+```js
+import R from 'ramda';
+import contract from 'neat-contract';
 
 // contracting array
 const prefixArrayOfEslintPlugins = R.pipe(
-  R.pipe( // contracting (2 steps)
-    contract('plugins', Array),
-    R.map(contract('plugins[item]', String))
+  R.pipe( // contracting in 2 steps
+    contract('plugins', Array), // array itself
+    R.map(contract('plugins[item]', String)) // each item of array
   ),
   R.map(R.concat('eslint-plugin-'))
 );
@@ -79,12 +100,9 @@ const prefixArrayOfEslintPlugins = R.pipe(
 prefixArrayOfEslintPlugins(['import', 'export']); // ['eslint-plugin-import', 'eslint-plugin-export']
 prefixArrayOfEslintPlugins(2); // throw new TypeError('`plugins` should be an `Array`, but got `Number`: 2')
 prefixArrayOfEslintPlugins(['unicorns', 2]); // throw new TypeError('`plugins[item]` should be an `String`, but got `Number`: 2')
-
-// contracting arrays in asynchronous functions goes
-// the same way as before with `R.pipeP` as in prefixEslintPluginAsync example
-
-
 ```
+
+Contracting arrays in asynchronous functions goes, the same way as before with `R.pipeP` as in `prefixEslintPluginAsync` async example from above.
 
 ## API
 
