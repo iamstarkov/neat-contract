@@ -17,7 +17,7 @@ Well suited for promises as well.
 
 ## Usage
 
-* [Basic][]
+* [Basic](#basic)
 * Data-flow
   * Sync data-flow
   * Async data-flow
