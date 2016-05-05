@@ -68,18 +68,20 @@ prefixEslintPlugin(/reg/); // new TypeError('`pluginName` should be an `String`,
 import R from 'ramda';
 import contract from 'neat-contract';
 
-// async data flow
+// helpers
 const toPromise = Promise.resolve.bind(Promise);
+const _log = console.log.bind(console);
+const _throw = err => { throw err; };
+
+// async data flow
 const prefixEslintPluginAsync = R.pipeP(toPromise,
   contract('pluginName', String), // contracting
   R.concat('eslint-plugin-')
 );
 
-const log = result => console.log(result);
-const err = result => console.error(result);
-prefixEslintPluginAsync('import').then(log); // 'eslint-plugin-import'
-prefixEslintPluginAsync(true).catch(err);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
-prefixEslintPluginAsync(/reg/).catch(err); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
+prefixEslintPluginAsync('import').then(_log); // 'eslint-plugin-import'
+prefixEslintPluginAsync(true).catch(_throw);  // new TypeError('`pluginName` should be an `String`, but got `Boolean`: true')
+prefixEslintPluginAsync(/reg/).catch(_throw); // new TypeError('`pluginName` should be an `String`, but got `RegExp`: /reg/')
 ```
 
 ##### Arrays in data-flow
