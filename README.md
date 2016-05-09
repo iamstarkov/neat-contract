@@ -31,6 +31,11 @@ import contract from 'neat-contract';
 contract('input', String, 'unicorns'); // 'unicorns'
 contract('input', String, 2); // new TypeError('`input` should be an `String`, but got `Number`: 2')
 
+// several types
+contract('input', [String, Array], 'unicorns'); // 'unicorns'
+contract('input', [String, Array], ['unicorns']); // ['unicorns']
+contract('input', [String, Array], 2); // new TypeError('`input` should be an `String|Array`, but got `Number`: 2')
+
 // curried
 contract('input', String)('unicorns'); // 'unicorns'
 contract('input', String)(2); // new TypeError('`input` should be an `String`, but got `Number`: 2')
