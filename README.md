@@ -1,5 +1,7 @@
 # neat-contract
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/iamstarkov/neat-contract.svg)](https://greenkeeper.io/)
+
 [![NPM version][npm-image]][npm-url]
 [![Unix Build Status][travis-image]][travis-url]
 [![Windows Build Status][appveyor-image]][appveyor-url]
